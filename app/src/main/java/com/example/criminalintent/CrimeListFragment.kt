@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.criminalintent.databinding.FragmentCrimeListBinding
 import com.example.criminalintent.databinding.ListItemCrimeBinding
+import com.example.criminalintent.databinding.ListItemCrimePoliceBinding
 
 
 class CrimeListFragment : Fragment() {
@@ -51,6 +52,7 @@ class CrimeListFragment : Fragment() {
         adapter = CrimeAdapter(crimes)
         crimeRecyclerView.adapter = adapter
 
+
     }
 
     companion object {
@@ -77,9 +79,35 @@ class CrimeListFragment : Fragment() {
         }
     }
 
+       /** HOLDER 2*/
+    private inner class CrimeHolderPolice(view: View): RecyclerView.ViewHolder(view), View.OnClickListener{
+        val binding = ListItemCrimePoliceBinding.bind(view)
+        private lateinit var crime: Crime
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        fun bind(crime: Crime) {
+            this.crime = crime
+            binding.crimeTitlePolice.text = crime.title
+            binding.crimeDatePolice.text = crime.date.toString()
+        }
+
+        override fun onClick(p0: View?) {
+            Toast.makeText(context, "${crime.title} pressed!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+
    /** ADAPTER */
 
     private inner class CrimeAdapter(var crimes: List<Crime>): RecyclerView.Adapter<CrimeHolder>() {
+
+       override fun getItemViewType(position: Int): Int {
+           return super.getItemViewType(position)
+       }
 
        /** Return inflate layout */
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CrimeHolder {
