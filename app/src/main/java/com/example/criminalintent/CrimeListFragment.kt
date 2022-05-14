@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -17,11 +16,9 @@ import com.example.criminalintent.databinding.ListItemCrimePoliceBinding
 
 
 class CrimeListFragment : Fragment() {
-
     private lateinit var crimeRecyclerView: RecyclerView
     private lateinit var binding: FragmentCrimeListBinding
     private var adapter: CrimeAdapter? = null
-
     private val crimeListViewModel: CrimeListViewModel by lazy {
         ViewModelProvider(this)[CrimeListViewModel::class.java]
     }
@@ -35,16 +32,14 @@ class CrimeListFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentCrimeListBinding.inflate(inflater, container, false)
         crimeRecyclerView =
             binding.crimeRecyclerView.findViewById(R.id.crime_recycler_view) as RecyclerView
-//        val view = inflater.inflate(R.layout.fragment_crime_list, container, false)
-//        crimeRecyclerView = view.findViewById(R.id.crime_recycler_view) as RecyclerView
         crimeRecyclerView.layoutManager = LinearLayoutManager(context)
 
         updateUI()
-//        return view
+
         return binding.root
     }
 
@@ -52,14 +47,11 @@ class CrimeListFragment : Fragment() {
         val crimes = crimeListViewModel.crimes
         adapter = CrimeAdapter(crimes)
         crimeRecyclerView.adapter = adapter
-
-
     }
 
     companion object {
         fun newInstance(): CrimeListFragment = CrimeListFragment()
     }
-
 
 
     /** ADAPTER */
@@ -81,7 +73,6 @@ class CrimeListFragment : Fragment() {
 
             lateinit var crime: Crime
             val bindingNotPolice = ListItemCrimeBinding.bind(view)
-//            val bindingRequiresPolice = ListItemCrimePoliceBinding.bind(view)
 
             init {
                 itemView.setOnClickListener(this)
@@ -92,11 +83,7 @@ class CrimeListFragment : Fragment() {
                 bindingNotPolice.crimeTitle.text = crime.title
                 bindingNotPolice.crimeDate.text = crime.date.toString()
             }
-//            fun bindP(crime: Crime) {
-//                this.crime = crime
-//                bindingRequiresPolice.crimeTitlePolice.text = crime.title
-//                bindingRequiresPolice.crimeDatePolice.text = crime.date.toString()
-//            }
+
 
             override fun onClick(p0: View?) {
                 Toast.makeText(context, "${crime.title} pressed!", Toast.LENGTH_SHORT).show()
@@ -107,7 +94,7 @@ class CrimeListFragment : Fragment() {
         /** HOLDER 2 */
         private inner class SeriousCrimeHolder(view: View) : CrimeHolder(view),
             View.OnClickListener {
-//            val bindingNotPolice = ListItemCrimeBinding.bind(view)
+            //            val bindingNotPolice = ListItemCrimeBinding.bind(view)
             val bindingRequiresPolice = ListItemCrimePoliceBinding.bind(view)
             lateinit var crime: Crime
 
@@ -131,34 +118,33 @@ class CrimeListFragment : Fragment() {
         }
 
 
-
         override fun getItemViewType(position: Int): Int {
             val crime = crimes[position]
             return when (crime.requiresPolice) {
                 true -> CHECK_TRUE
                 false -> CHECK_FALSE
             }
-//           return super.getItemViewType(position)
         }
 
         /** Return inflate layout */
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CrimeHolder {
-            val viewNotPolice = layoutInflater.inflate(R.layout.list_item_crime, parent, false)
-            val viewForPolice = layoutInflater.inflate(R.layout.list_item_crime_police, parent, false)
+            val viewNotPolice =
+                layoutInflater.inflate(R.layout.list_item_crime, parent, false)
+            val viewForPolice =
+                layoutInflater.inflate(R.layout.list_item_crime_police, parent, false)
 
             return when (viewType) {
                 CHECK_TRUE -> SeriousCrimeHolder(view = viewForPolice)
                 else -> NormalCrimeHolder(view = viewNotPolice)
             }
-
         }
 
         /** Fill u views using Holder */
         override fun onBindViewHolder(holder: CrimeHolder, position: Int) {
             val crime = crimes[position]
-//            val type: Int = getItemViewType(position)
+
             when (holder) {
-                is SeriousCrimeHolder ->  holder.bind(crime = crime)
+                is SeriousCrimeHolder -> holder.bind(crime = crime)
                 is NormalCrimeHolder -> holder.bind(crime = crime)
             }
         }
