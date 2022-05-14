@@ -4,6 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.102" />
+        <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1965" />
+        <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/drawable/layout_obvert.xml" value="0.1635" />
+        <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/drawable/rounding_layout.xml" value="0.1965" />
         <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/layout/activity_crime.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/layout/crime_fragment.xml" value="0.20416666666666666" />
@@ -11,8 +14,9 @@
         <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/layout/fragment.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/layout/fragment_crime.xml" value="0.25" />
         <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/layout/fragment_crime_list.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/layout/list_item_crime.xml" value="0.33" />
-        <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/layout/list_item_crime_police.xml" value="0.33" />
+        <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/layout/list_item_crime.xml" value="0.5" />
+        <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/layout/list_item_crime_police.xml" value="0.25" />
+        <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/layout/rounding_layout.xml" value="0.20416666666666666" />
       </map>
     </option>
   </component>

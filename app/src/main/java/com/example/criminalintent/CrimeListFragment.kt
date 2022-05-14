@@ -1,11 +1,15 @@
 package com.example.criminalintent
 
+
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+
+import android.text.format.DateFormat
+
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.criminalintent.databinding.FragmentCrimeListBinding
 import com.example.criminalintent.databinding.ListItemCrimeBinding
 import com.example.criminalintent.databinding.ListItemCrimePoliceBinding
+
 
 
 class CrimeListFragment : Fragment() {
@@ -70,9 +75,9 @@ class CrimeListFragment : Fragment() {
         /** HOLDER */
         private inner class NormalCrimeHolder(view: View) : CrimeHolder(view),
             View.OnClickListener {
-
             lateinit var crime: Crime
             val bindingNotPolice = ListItemCrimeBinding.bind(view)
+
 
             init {
                 itemView.setOnClickListener(this)
@@ -81,7 +86,10 @@ class CrimeListFragment : Fragment() {
             fun bind(crime: Crime) {
                 this.crime = crime
                 bindingNotPolice.crimeTitle.text = crime.title
-                bindingNotPolice.crimeDate.text = crime.date.toString()
+                bindingNotPolice.crimeDate.text = DateFormat.format("EEE, d MMM, yyyy", this.crime.date).toString()
+                bindingNotPolice.crimeSolved.visibility = if (crime.isSolved) {
+                    View.VISIBLE
+                } else View.GONE
             }
 
 
@@ -105,7 +113,10 @@ class CrimeListFragment : Fragment() {
             fun bind(crime: Crime) {
                 this.crime = crime
                 bindingRequiresPolice.crimeTitle.text = crime.title
-                bindingRequiresPolice.crimeDate.text = crime.date.toString()
+                bindingRequiresPolice.crimeDate.text = DateFormat.format("EEE, d MMM, yyyy", this.crime.date).toString()
+                bindingRequiresPolice.crimeSolved.visibility = if (crime.isSolved) {
+                    View.VISIBLE
+                } else View.GONE
                 bindingRequiresPolice.crimeButton.setOnClickListener {
                     Toast.makeText(context, "This crime serious!", Toast.LENGTH_SHORT).show()
                 }
