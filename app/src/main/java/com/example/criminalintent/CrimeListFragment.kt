@@ -11,9 +11,11 @@ import android.widget.Toast
 import android.text.format.DateFormat
 
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.criminalintent.database.CrimeRepository
 import com.example.criminalintent.databinding.FragmentCrimeListBinding
 import com.example.criminalintent.databinding.ListItemCrimeBinding
 import com.example.criminalintent.databinding.ListItemCrimePoliceBinding
@@ -23,14 +25,9 @@ import com.example.criminalintent.models.Crime
 class CrimeListFragment : Fragment() {
     private lateinit var crimeRecyclerView: RecyclerView
     private lateinit var binding: FragmentCrimeListBinding
-    private var adapter: CrimeAdapter? = null
+    private var adapter: CrimeAdapter? = CrimeAdapter(emptyList())
     private val crimeListViewModel: CrimeListViewModel by lazy {
         ViewModelProvider(this)[CrimeListViewModel::class.java]
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d("CrimeListFragment", "Total crimes: ${crimeListViewModel.crimes.size}")
     }
 
     override fun onCreateView(
@@ -42,14 +39,25 @@ class CrimeListFragment : Fragment() {
         crimeRecyclerView =
             binding.crimeRecyclerView.findViewById(R.id.crime_recycler_view) as RecyclerView
         crimeRecyclerView.layoutManager = LinearLayoutManager(context)
-
-        updateUI()
+        crimeRecyclerView.adapter = adapter
 
         return binding.root
     }
 
-    private fun updateUI() {
-        val crimes = crimeListViewModel.crimes
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        crimeListViewModel.crimeListLiveData.observe(
+            viewLifecycleOwner,
+            Observer { crimes ->
+                crimes?.let {
+                    Log.i("CrimeListFragment", "Got crimes ${crimes.size}")
+                    updateUI(crimes = crimes)
+                }
+            }
+        )
+    }
+
+    private fun updateUI(crimes: List<Crime>) {
         adapter = CrimeAdapter(crimes)
         crimeRecyclerView.adapter = adapter
     }
@@ -57,6 +65,17 @@ class CrimeListFragment : Fragment() {
     companion object {
         fun newInstance(): CrimeListFragment = CrimeListFragment()
     }
+
+
+
+
+
+
+
+
+
+
+
 
 
     /** ADAPTER */

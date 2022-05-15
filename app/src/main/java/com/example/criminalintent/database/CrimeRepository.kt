@@ -1,12 +1,13 @@
-package com.example.criminalintent.repository
+package com.example.criminalintent.database
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.room.Room
 import com.example.criminalintent.database.CrimeDatabase
 import com.example.criminalintent.models.Crime
 import java.util.*
 
-private val DATABASE_NAME = "crime-database"
+private const val DATABASE_NAME = "crime-database"
 
 class CrimeRepository private constructor(context: Context) {
 
@@ -18,8 +19,8 @@ class CrimeRepository private constructor(context: Context) {
 
     private val crimeDao = database.crimeDao()
 
-    fun getCrimes(): List<Crime> = crimeDao.getCrimes()
-    fun getCrime(id : UUID): Crime? = crimeDao.getCrime(id = id)
+    fun getCrimes(): LiveData<List<Crime>> = crimeDao.getCrimes()
+    fun getCrime(id: UUID): LiveData<Crime?> = crimeDao.getCrime(id = id)
 
 
 
