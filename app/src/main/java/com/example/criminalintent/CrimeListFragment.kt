@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.criminalintent.databinding.FragmentCrimeListBinding
 import com.example.criminalintent.databinding.ListItemCrimeBinding
 import com.example.criminalintent.databinding.ListItemCrimePoliceBinding
-
+import com.example.criminalintent.models.Crime
 
 
 class CrimeListFragment : Fragment() {

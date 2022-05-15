@@ -1,6 +1,7 @@
 package com.example.criminalintent
 
 import androidx.lifecycle.ViewModel
+import com.example.criminalintent.models.Crime
 
 class CrimeListViewModel : ViewModel() {
 

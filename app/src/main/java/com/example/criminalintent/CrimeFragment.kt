@@ -11,6 +11,7 @@ import android.widget.CheckBox
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import com.example.criminalintent.databinding.FragmentCrimeBinding
+import com.example.criminalintent.models.Crime
 
 class CrimeFragment : Fragment() {
 
