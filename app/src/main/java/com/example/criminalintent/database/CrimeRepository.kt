@@ -6,6 +6,7 @@ import androidx.room.Room
 import com.example.criminalintent.database.CrimeDatabase
 import com.example.criminalintent.models.Crime
 import java.util.*
+import java.util.concurrent.Executors
 
 private const val DATABASE_NAME = "crime-database"
 
@@ -18,9 +19,22 @@ class CrimeRepository private constructor(context: Context) {
     ).build()
 
     private val crimeDao = database.crimeDao()
+    private val executor = Executors.newSingleThreadExecutor()
 
     fun getCrimes(): LiveData<List<Crime>> = crimeDao.getCrimes()
+
     fun getCrime(id: UUID): LiveData<Crime?> = crimeDao.getCrime(id = id)
+
+    fun updateCrime(crime: Crime) {
+        executor.execute {
+            crimeDao.updateCrime(crime)
+        }
+    }
+    fun addCrime(crime: Crime) {
+        executor.execute {
+            crimeDao.addCrime(crime)
+        }
+    }
 
 
 
