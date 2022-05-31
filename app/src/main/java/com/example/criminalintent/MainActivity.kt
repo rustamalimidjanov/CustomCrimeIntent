@@ -2,10 +2,12 @@ package com.example.criminalintent
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.view.isVisible
 import com.example.criminalintent.databinding.ActivityCrimeBinding
 import com.example.criminalintent.fragments.Callbacks
 import com.example.criminalintent.fragments.CrimeFragment
 import com.example.criminalintent.fragments.CrimeListFragment
+import com.example.criminalintent.models.Crime
 import java.util.*
 
 class MainActivity : AppCompatActivity(), Callbacks {

@@ -3,32 +3,35 @@ package com.example.criminalintent.fragments
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
-import androidx.core.widget.doAfterTextChanged
-import androidx.core.widget.doOnTextChanged
+
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.Observer
 import com.example.criminalintent.CrimeDetailViewModel
 import com.example.criminalintent.R
-import com.example.criminalintent.databinding.FragmentCrimeBinding
+
 import com.example.criminalintent.models.Crime
 import java.util.*
 
 private const val ARG_CRIME_ID = "crime_id"
+private const val REQUEST_DATE = "DialogDate"
+private const val REQUEST_TIME = "DialogTime"
 
-class CrimeFragment : Fragment() {
+class CrimeFragment : Fragment(), FragmentResultListener {
 
-    lateinit var binding: FragmentCrimeBinding
     private lateinit var crime: Crime
     private lateinit var titleField: EditText
     private lateinit var dateButton: Button
     private lateinit var solvedCheckBox: CheckBox
+    private lateinit var timeButton: Button
     private val crimeDetailViewModel: CrimeDetailViewModel by lazy {
         ViewModelProvider(this)[CrimeDetailViewModel::class.java]
     }
@@ -47,18 +50,12 @@ class CrimeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentCrimeBinding.inflate(inflater, container, false)
-
-        titleField = binding.crimeTitle
-        dateButton = binding.crimeDate
-        solvedCheckBox = binding.crimeSolved
-
-        dateButton.apply {
-            text = crime.date.toString()
-            isEnabled = false
-        }
-
-        return binding.root
+        val view = inflater.inflate(R.layout.fragment_crime, container, false)
+        titleField = view.findViewById<EditText>(R.id.crime_title)
+        dateButton = view.findViewById<Button>(R.id.crime_date)
+        solvedCheckBox = view.findViewById<CheckBox>(R.id.crime_solved)
+        timeButton = view.findViewById<Button>(R.id.crime_time)
+        return view
     }
 
 
@@ -73,6 +70,8 @@ class CrimeFragment : Fragment() {
                 }
             }
         )
+        childFragmentManager.setFragmentResultListener(REQUEST_DATE, viewLifecycleOwner, this)
+        childFragmentManager.setFragmentResultListener(REQUEST_TIME, viewLifecycleOwner, this)
 
     }
 
@@ -103,7 +102,33 @@ class CrimeFragment : Fragment() {
                 crime.isSolved = isChecked
             }
         }
+
+        dateButton.setOnClickListener {
+            DatePickerFragment
+                .newInstance(crime.date, REQUEST_DATE)
+                .show(childFragmentManager, REQUEST_DATE)
+        }
+
+        timeButton.setOnClickListener {
+            TimePickerFragment
+                .newInstance(crime.date, REQUEST_TIME)
+                .show(childFragmentManager, REQUEST_TIME)
+        }
     }
+
+    override fun onFragmentResult(requestKey: String, result: Bundle) {
+        when (requestKey) {
+            REQUEST_DATE -> {
+                crime.date = DatePickerFragment.getSelectedDate(result)
+                updateUI()
+            }
+            REQUEST_TIME -> {
+                crime.date = TimePickerFragment.getSelectedTime(result)
+                updateUI()
+            }
+        }
+    }
+
 
     override fun onStop() {
         super.onStop()
@@ -112,11 +137,12 @@ class CrimeFragment : Fragment() {
 
     private fun updateUI() {
         titleField.setText(crime.title).toString()
-        dateButton.text = crime.date.toString()
+        dateButton.text = DateFormat.format("EEE, d MMM, yyyy", this.crime.date).toString()
         solvedCheckBox.apply {
             isChecked = crime.isSolved
             jumpDrawablesToCurrentState()
         }
+        timeButton.text = DateFormat.format("HH:mm 'o''clock'", this.crime.date).toString()
     }
 
     companion object {

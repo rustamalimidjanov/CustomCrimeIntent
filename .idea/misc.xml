@@ -10,13 +10,16 @@
         <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/layout/activity_crime.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/layout/crime_fragment.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/layout/frag.xml" value="0.1" />
+        <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/layout/frag.xml" value="0.18" />
         <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/layout/fragment.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/layout/fragment_crime.xml" value="0.25" />
-        <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/layout/fragment_crime_list.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/layout/fragment_crime.xml" value="0.18" />
+        <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/layout/fragment_crime1.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/layout/fragment_crime_list.xml" value="0.25" />
+        <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/layout/fragment_crime_list1.xml" value="0.25" />
         <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/layout/list_item_crime.xml" value="0.5" />
         <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/layout/list_item_crime_police.xml" value="0.25" />
         <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/layout/rounding_layout.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/123/AndroidStudioProjects/CriminalIntent/app/src/main/res/menu/fragment_crime_list.xml" value="1.434375" />
       </map>
     </option>
   </component>
