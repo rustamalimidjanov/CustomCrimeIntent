@@ -1,13 +1,14 @@
 package com.example.criminalintent.fragments
 
-import android.app.Activity
-import android.content.Context
+
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.format.DateFormat
@@ -17,6 +18,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.ImageView
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
@@ -49,6 +51,7 @@ class CrimeFragment : Fragment(), FragmentResultListener {
     private lateinit var reportButton: Button
     private lateinit var suspectButton: Button
     private lateinit var phoneButton: Button
+    private lateinit var imageView: ImageView
 
     private val crimeDetailViewModel: CrimeDetailViewModel by lazy {
         ViewModelProvider(this)[CrimeDetailViewModel::class.java]
@@ -78,6 +81,7 @@ class CrimeFragment : Fragment(), FragmentResultListener {
         reportButton = view.findViewById(R.id.crime_report)
         suspectButton = view.findViewById(R.id.crime_suspect)
         phoneButton = view.findViewById(R.id.crime_phone)
+        imageView = view.findViewById(R.id.crime_imageView)
         return view
     }
 
@@ -157,7 +161,9 @@ class CrimeFragment : Fragment(), FragmentResultListener {
         }
 
         phoneButton.setOnClickListener {
-            pickContactPhone.launch(null)
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            launchCam.launch(intent)
+
         }
 
 
@@ -181,23 +187,11 @@ class CrimeFragment : Fragment(), FragmentResultListener {
             }
         }
     }
-    private val pickContactPhone = registerForActivityResult(ActivityResultContracts.PickContact()) { contactUri ->
-        val queryFields = arrayOf(ContactsContract.Contacts.DISPLAY_NAME)
-        val cursor = contactUri?.let {
-            requireActivity().contentResolver
-                .query (it, queryFields, null, null, null)
-        }
-        cursor?.use {
-            // Verify cursor contains at least one result
-            if (it.count > 0) {
-                // Pull out first column of the first row of data, that's our suspect name
-                it.moveToFirst()
-                val suspect = it.getString(0)
-                crime.suspect = suspect
-                crimeDetailViewModel.saveCrime(crime)
-                phoneButton.text = suspect
-            }
-        }
+
+    private val launchCam = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        val bitmap = it?.data?.extras?.get("data") as Bitmap
+        imageView.setImageBitmap(bitmap)
+        imageView.visibility = View.VISIBLE
     }
 
 
