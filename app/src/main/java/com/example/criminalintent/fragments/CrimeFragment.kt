@@ -23,6 +23,7 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentResultListener
@@ -32,6 +33,7 @@ import com.example.criminalintent.CrimeDetailViewModel
 import com.example.criminalintent.R
 
 import com.example.criminalintent.models.Crime
+import java.io.File
 import java.util.*
 
 private const val ARG_CRIME_ID = "crime_id"
@@ -52,6 +54,8 @@ class CrimeFragment : Fragment(), FragmentResultListener {
     private lateinit var suspectButton: Button
     private lateinit var phoneButton: Button
     private lateinit var imageView: ImageView
+    private lateinit var photoFile: File
+    private lateinit var photoUri: Uri
 
     private val crimeDetailViewModel: CrimeDetailViewModel by lazy {
         ViewModelProvider(this)[CrimeDetailViewModel::class.java]
@@ -93,6 +97,12 @@ class CrimeFragment : Fragment(), FragmentResultListener {
             Observer { crime ->
                 crime?.let {
                     this.crime = crime
+                    photoFile = crimeDetailViewModel.getPhotoFile(crime = crime)
+                    photoUri = FileProvider.getUriForFile(
+                        requireActivity(),
+                        "com.example.criminalintent.fileprovider", photoFile
+                    )
+                    imageView.setImageURI(photoUri)
                     updateUI()
                 }
             }
@@ -154,45 +164,41 @@ class CrimeFragment : Fragment(), FragmentResultListener {
             }
         }
 
-        suspectButton.apply {
-            setOnClickListener {
-                pickContact.launch(null)
-            }
+        suspectButton.setOnClickListener {
+            pickContact.launch(null)
+
         }
 
         phoneButton.setOnClickListener {
-            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            launchCam.launch(intent)
-
+            resultLauncher.launch(photoUri)
         }
-
 
     }
 
-    private val pickContact = registerForActivityResult(ActivityResultContracts.PickContact()) { contactUri ->
-        val queryFields = arrayOf(ContactsContract.Contacts.DISPLAY_NAME)
-        val cursor = contactUri?.let {
-            requireActivity().contentResolver
-                .query (it, queryFields, null, null, null)
-        }
-        cursor?.use {
-            // Verify cursor contains at least one result
-            if (it.count > 0) {
-                // Pull out first column of the first row of data, that's our suspect name
-                it.moveToFirst()
-                val suspect = it.getString(0)
-                crime.suspect = suspect
-                crimeDetailViewModel.saveCrime(crime)
-                suspectButton.text = suspect
+    private val pickContact =
+        registerForActivityResult(ActivityResultContracts.PickContact()) { contactUri ->
+            val queryFields = arrayOf(ContactsContract.Contacts.DISPLAY_NAME)
+            val cursor = contactUri?.let {
+                requireActivity().contentResolver
+                    .query(it, queryFields, null, null, null)
+            }
+            cursor?.use {
+                if (it.count > 0) {
+                    it.moveToFirst()
+                    val suspect = it.getString(0)
+                    crime.suspect = suspect
+                    crimeDetailViewModel.saveCrime(crime)
+                    suspectButton.text = suspect
+                }
             }
         }
-    }
 
-    private val launchCam = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-        val bitmap = it?.data?.extras?.get("data") as Bitmap
-        imageView.setImageBitmap(bitmap)
-        imageView.visibility = View.VISIBLE
-    }
+    private val resultLauncher =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) {
+            imageView.setImageURI(null)
+            imageView.setImageURI(photoUri)
+        }
+
 
 
     override fun onFragmentResult(requestKey: String, result: Bundle) {
